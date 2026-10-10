@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mis XV · María Luz</title>
+  <meta name="description" content="Estás invitado/a a los XV de María Luz · Sábado 24 de octubre. Una noche para brillar.">
+  <meta name="theme-color" content="#050b24">
+  <meta property="og:title" content="Mis XV · María Luz">
+  <meta property="og:description" content="Hay noches que se recuerdan para siempre. 24 de octubre ✨">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1a4a'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%23cfe0ff'%3EXV%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="is-locked">
+
+  <!-- Cielo de estrellas (fondo interactivo) -->
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="dawn" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <!-- ============ SOBRE DE BIENVENIDA ============ -->
+  <div class="envelope-screen" id="envelopeScreen" role="dialog" aria-label="Abrir invitación">
+    <p class="env-kicker">Tenés una invitación especial</p>
+    <button class="envelope" id="openEnvelope" aria-label="Tocá el sello para abrir la invitación">
+      <span class="env-back"></span>
+      <span class="env-letter">
+        <span class="env-letter-xv">XV</span>
+        <span class="env-letter-name">María Luz</span>
+      </span>
+      <span class="env-front"></span>
+      <span class="env-flap"></span>
+      <span class="env-seal"><span>ML</span></span>
+    </button>
+    <p class="env-hint"><span class="tap-dot"></span> Tocá el sello para abrir</p>
+    <button class="env-mute" id="enterSilent" type="button">Entrar sin música</button>
+  </div>
+
+  <!-- ============ REPRODUCTOR FLOTANTE ============ -->
+  <div class="player off" id="player">
+    <button class="player-disc" id="playerToggle" aria-label="Pausar o reproducir música">
+      <span class="disc"><span class="disc-label">XV</span></span>
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <div class="player-info" id="playerInfo">
+      <span class="player-title" id="playerTitle">Música de la noche</span>
+      <span class="player-artist" id="playerArtist">Tocá para escuchar</span>
+    </div>
+    <button class="player-next" id="playerNext" aria-label="Siguiente canción">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M6 6l8.5 6L6 18V6zm10 0h2v12h-2z"/></svg>
+    </button>
+  </div>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="inicio">
+      <div class="moon" aria-hidden="true"></div>
+      <p class="hero-kicker reveal">Mis</p>
+      <h1 class="hero-xv reveal" aria-label="XV">
+        <span>X</span><span>V</span>
+      </h1>
+      <h2 class="hero-name" id="heroName" aria-label="María Luz">María Luz</h2>
+      <div class="hero-divider reveal" aria-hidden="true">
+        <svg viewBox="0 0 220 20"><path d="M0 10h90M130 10h90" stroke="currentColor" stroke-width=".8"/><path d="M110 2l3 8-3 8-3-8z" fill="currentColor"/><circle cx="96" cy="10" r="1.6" fill="currentColor"/><circle cx="124" cy="10" r="1.6" fill="currentColor"/></svg>
+      </div>
+      <p class="hero-date reveal">
+        <span>Sábado</span>
+        <strong>24 · 10</strong>
+        <span id="heroYear">2026</span>
+      </p>
+      <a class="scroll-cue" href="#frase" aria-label="Deslizá para ver más">
+        <span>Deslizá</span>
+        <i></i>
+      </a>
+    </section>
+
+    <!-- ============ FRASE QUE SE ILUMINA AL SCROLLEAR ============ -->
+    <section class="quote-scrub" id="frase">
+      <div class="quote-sticky">
+        <p class="scrub-text" id="scrubText">
+          Hay momentos que se viven una sola vez, noches que se guardan en el corazón para siempre. Quiero que estés conmigo la noche en que brilla la Luz.
+        </p>
+        <p class="scrub-sign">— María Luz</p>
+      </div>
+    </section>
+
+    <!-- ============ CUENTA REGRESIVA ============ -->
+    <section class="section countdown-section" id="cuenta">
+      <p class="eyebrow reveal">Ya falta poco</p>
+      <h3 class="title reveal">Cuenta regresiva</h3>
+      <div class="countdown reveal" id="countdown" role="timer" aria-live="off">
+        <div class="cd-unit"><span class="cd-num" data-unit="d">00</span><span class="cd-lbl">días</span></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><span class="cd-num" data-unit="h">00</span><span class="cd-lbl">horas</span></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><span class="cd-num" data-unit="m">00</span><span class="cd-lbl">min</span></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><span class="cd-num" data-unit="s">00</span><span class="cd-lbl">seg</span></div>
+      </div>
+      <p class="countdown-note reveal" id="countdownNote">para la noche más soñada</p>
+    </section>
+
+    <!-- ============ CUÁNDO Y DÓNDE ============ -->
+    <section class="section info" id="fiesta">
+      <p class="eyebrow reveal">La fiesta</p>
+      <h3 class="title reveal">Cuándo y dónde</h3>
+
+      <article class="card tilt reveal" id="cardDate">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="31" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 19h34M16 6v8M32 6v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M24 35s-6-3.6-6-7.6a3.2 3.2 0 0 1 6-1.6 3.2 3.2 0 0 1 6 1.6c0 4-6 7.6-6 7.6z" fill="currentColor"/></svg>
+        </div>
+        <h4 class="card-title">Sábado 24 de octubre</h4>
+        <p class="card-text" id="dateTimeText">A partir de las 21:30 hs</p>
+        <div class="mini-cal" id="miniCal" aria-hidden="true"></div>
+        <a class="btn btn-ghost" id="calendarBtn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11zm-8-9h2v3h3v2h-3v3h-2v-3H8v-2h3z"/></svg>
+          Agendar en mi calendario
+        </a>
+      </article>
+
+      <article class="card tilt reveal" id="cardPlace">
+        <div class="card-icon pin" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><path d="M24 44s14-13.2 14-24a14 14 0 0 0-28 0c0 10.8 14 24 14 24z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="24" cy="20" r="5" fill="currentColor"/></svg>
+          <span class="pin-pulse"></span>
+        </div>
+        <h4 class="card-title" id="placeName">El lugar</h4>
+        <p class="card-text" id="placeText">Te espero para vivir juntos esta noche única.</p>
+        <a class="btn btn-primary" id="mapsBtn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          Cómo llegar
+        </a>
+      </article>
+    </section>
+
+    <!-- ============ DRESS CODE ============ -->
+    <section class="section dress" id="dresscode">
+      <p class="eyebrow reveal">Código de vestimenta</p>
+      <h3 class="title reveal">Elegante <em>sport</em></h3>
+
+      <div class="dress-figures reveal" aria-hidden="true">
+        <svg class="fig fig-dress" viewBox="0 0 80 120">
+          <path d="M33 8c0-4 14-4 14 0l-2 14h-10z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M35 22h10l4 16-4 6 22 66H13l22-66-4-6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M31 44h18" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="40" cy="70" r="1.2" fill="currentColor"/><circle cx="30" cy="90" r="1.2" fill="currentColor"/><circle cx="52" cy="86" r="1.2" fill="currentColor"/>
+        </svg>
+        <svg class="fig fig-suit" viewBox="0 0 80 120">
+          <path d="M28 10l12 8 12-8 14 8v34l-6 2v58H20V54l-6-2V18z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M40 18l-7 22 7 50 7-50z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M37 22h6l-3 5z" fill="currentColor"/>
+          <circle cx="40" cy="60" r="1.2" fill="currentColor"/><circle cx="40" cy="72" r="1.2" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <p class="dress-text reveal">Vení lindo/a y cómodo/a para bailar toda la noche: arreglado, pero sin perder la onda.</p>
+
+      <div class="nope reveal">
+        <p class="nope-title">No se permite</p>
+        <div class="nope-items">
+          <div class="nope-item">
+            <span class="nope-icon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 32c0-4 3-8 6-10l4-8h6l2 6 10 4c4 1.5 6 4 6 8v4H8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 36h34" stroke="currentColor" stroke-width="1.6"/><path d="M19 22l3 2M17 26l3 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <i class="cross"></i>
+            </span>
+            <span>Ropa deportiva</span>
+          </div>
+          <div class="nope-item">
+            <span class="nope-icon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 30c0-9 6-16 14-16s14 7 14 16z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M38 30c4 0 7 1 7 2.5S38 35 24 35 6 34 6 32.5 7 30 10 30" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="24" cy="13" r="1.8" fill="currentColor"/></svg>
+              <i class="cross"></i>
+            </span>
+            <span>Gorras</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="blue-note reveal" id="blueNote">
+        <span class="blue-swatch" aria-hidden="true"></span>
+        El azul es el color de la quinceañera: te pedimos que se lo dejes a ella.
+      </p>
+    </section>
+
+    <!-- ============ PLAYLIST ============ -->
+    <section class="section playlist" id="musica">
+      <p class="eyebrow reveal">El DJ sos vos</p>
+      <h3 class="title reveal">¿Qué tema no puede faltar?</h3>
+      <p class="lead reveal">Buscá tus canciones favoritas, escuchá un adelanto y sumalas a la playlist de la fiesta. Todo lo que elijas viaja con tu confirmación.</p>
+
+      <div class="heat reveal" aria-live="polite">
+        <div class="heat-top">
+          <span class="heat-label">Temperatura de la pista</span>
+          <span class="heat-msg" id="heatMsg">Todavía está fría… ¡poné un tema!</span>
+        </div>
+        <div class="heat-bar"><span id="heatFill"></span></div>
+      </div>
+
+      <form class="search reveal" id="searchForm" role="search" autocomplete="off">
+        <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M10 2a8 8 0 0 1 6.3 12.9l5.4 5.4-1.4 1.4-5.4-5.4A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
+        <input id="searchInput" type="search" placeholder="Buscá un tema o artista…" aria-label="Buscar canción" enterkeyhint="search">
+        <button class="search-btn" type="submit">Buscar</button>
+      </form>
+
+      <div class="suggest reveal" id="suggestChips" aria-label="Sugerencias rápidas"></div>
+
+      <div class="results" id="results" aria-live="polite"></div>
+
+      <div class="picks" id="picksBox" hidden>
+        <div class="picks-head">
+          <h4>Tus temas para la fiesta</h4>
+          <span class="picks-count" id="picksCount">0</span>
+        </div>
+        <ul class="picks-list" id="picksList"></ul>
+        <div class="picks-actions">
+          <a class="btn btn-spotify" id="spotifyPlaylistBtn" target="_blank" rel="noopener" hidden>
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.6.6 0 0 1-.9.2c-2.4-1.5-5.4-1.8-9-1a.6.6 0 1 1-.3-1.2c3.9-.9 7.2-.5 9.9 1.1.3.2.4.6.3.9zm1.2-2.7a.8.8 0 0 1-1 .3c-2.7-1.7-6.9-2.2-10.2-1.2a.8.8 0 1 1-.4-1.5c3.7-1.1 8.3-.6 11.4 1.4.3.2.4.7.2 1zm.1-2.8C14.6 9 9.2 8.8 6.1 9.7a.9.9 0 1 1-.5-1.8c3.6-1.1 9.5-.9 13.2 1.3a.9.9 0 0 1-.9 1.7z"/></svg>
+            Abrir playlist en Spotify
+          </a>
+          <a class="btn btn-ghost" href="#confirmar">Enviar con mi confirmación ↓</a>
+        </div>
+      </div>
+
+      <div class="vibes reveal">
+        <p class="vibes-title">¿Qué querés que suene más?</p>
+        <div class="vibes-chips" id="vibes"></div>
+      </div>
+
+      <div class="spotify-embed" id="spotifyEmbed" hidden></div>
+    </section>
+
+    <!-- ============ FRASE INTERMEDIA ============ -->
+    <section class="section interlude">
+      <div class="sparkle-line reveal" aria-hidden="true"></div>
+      <blockquote class="big-quote reveal">
+        “No cuentes los días, hacé que los días cuenten… y esta noche va a contar para siempre.”
+      </blockquote>
+      <div class="sparkle-line reveal" aria-hidden="true"></div>
+    </section>
+
+    <!-- ============ REGALO ============ -->
+    <section class="section gift" id="regalo">
+      <div class="gift-box reveal" id="giftBox" role="button" tabindex="0" aria-label="Tocá el regalo">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <g class="gift-lid"><rect x="18" y="38" width="84" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M60 38c-6-14-26-16-24-4 1 6 14 4 24 4zM60 38c6-14 26-16 24-4-1 6-14 4-24 4z" fill="none" stroke="currentColor" stroke-width="1.8"/></g>
+          <rect x="24" y="56" width="72" height="48" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M60 38v66" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span class="gift-hint">Tocame</span>
+      </div>
+      <h3 class="title reveal">Mi mejor regalo</h3>
+      <p class="lead reveal">Es que estés conmigo esa noche. Si además querés hacerme un obsequio, habrá un cofre en la fiesta.</p>
+      <div class="alias reveal" id="aliasBox" hidden>
+        <p>O si preferís, podés hacerlo por transferencia:</p>
+        <button class="alias-copy" id="aliasCopy" type="button"><span id="aliasText"></span> <small>Copiar</small></button>
+      </div>
+    </section>
+
+    <!-- ============ CONFIRMACIÓN (RSVP) ============ -->
+    <section class="section rsvp" id="confirmar">
+      <div class="rsvp-card reveal">
+        <div class="rsvp-ornament" aria-hidden="true">
+          <svg viewBox="0 0 200 40"><path d="M10 20c30 0 40-14 60-14s20 14 30 14 10-14 30-14 30 14 60 14" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M100 10l4 10-4 10-4-10z" fill="currentColor"/></svg>
+        </div>
+        <p class="eyebrow">R.S.V.P.</p>
+        <h3 class="title">Confirmá tu asistencia</h3>
+        <p class="rsvp-lead">Tu presencia hará que esta noche brille todavía más. <span id="deadlineText"></span></p>
+
+        <form class="rsvp-form" id="rsvpForm" novalidate>
+          <div class="attend-toggle" role="radiogroup" aria-label="¿Vas a venir?">
+            <label class="attend-opt">
+              <input type="radio" name="attend" value="si" checked>
+              <span>¡Sí, voy! ✨</span>
+            </label>
+            <label class="attend-opt">
+              <input type="radio" name="attend" value="no">
+              <span>No podré ir</span>
+            </label>
+          </div>
+
+          <label class="field">
+            <input id="guestName" name="name" type="text" required placeholder=" " autocomplete="name" maxlength="80">
+            <span>Nombre y apellido</span>
+          </label>
+
+          <div class="field-row" id="guestsRow">
+            <span class="field-label">¿Cuántos son?</span>
+            <div class="stepper">
+              <button type="button" id="minus" aria-label="Restar persona">−</button>
+              <output id="guestCount" aria-live="polite">1</output>
+              <button type="button" id="plus" aria-label="Sumar persona">+</button>
+            </div>
+          </div>
+
+          <label class="field" id="dietField">
+            <input id="diet" name="diet" type="text" placeholder=" " maxlength="120">
+            <span>¿Alguna restricción alimentaria? (opcional)</span>
+          </label>
+
+          <label class="field">
+            <textarea id="message" name="message" rows="3" placeholder=" " maxlength="400"></textarea>
+            <span>Un mensajito para María Luz (opcional)</span>
+          </label>
+
+          <p class="rsvp-songs" id="rsvpSongs" hidden></p>
+
+          <button class="btn btn-wa" type="submit">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>
+            <span id="rsvpBtnText">Confirmar por WhatsApp</span>
+          </button>
+          <p class="form-error" id="formError" role="alert"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ CIERRE ============ -->
+    <footer class="closing">
+      <p class="closing-kicker reveal">Te espero para brillar juntos</p>
+      <p class="closing-name reveal">María Luz</p>
+      <p class="closing-date reveal">24 · 10 · <span id="footYear">2026</span></p>
+      <button class="wish-btn reveal" id="wishBtn" type="button">✨ Pedí un deseo</button>
+      <p class="wish-out" id="wishOut" aria-live="polite"></p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
